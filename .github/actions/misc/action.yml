@@ -33,6 +33,16 @@ runs:
         CONFIG_KALLSYMS=y
         CONFIG_KALLSYMS_ALL=y
 
+        # VFIO Support
+        CONFIG_VFIO=y
+
+        # YukiSU Support
+        CONFIG_KSU_SYSCALL_HOOK=y
+        CONFIG_KPROBES=y
+        CONFIG_KRETPROBES=y
+        CONFIG_HAVE_SYSCALL_TRACEPOINTS=y
+        CONFIG_KSU_MANUAL_HOOK=y
+
         EOF
         # CONFIG_TRIM_UNUSED_KSYMS is not set
         # add this here for later
