@@ -41,7 +41,6 @@ runs:
         CONFIG_KPROBES=y
         CONFIG_KRETPROBES=y
         CONFIG_HAVE_SYSCALL_TRACEPOINTS=y
-        CONFIG_KSU_MANUAL_HOOK=y
 
         EOF
         # CONFIG_TRIM_UNUSED_KSYMS is not set
