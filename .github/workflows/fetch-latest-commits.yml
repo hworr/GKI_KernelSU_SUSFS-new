@@ -32,8 +32,7 @@ jobs:
           set -euo pipefail
 
           COMMITS_FILE=".github/config/commits.json"
-          KSU_REPO="https://github.com/KernelSU-Next/KernelSU-Next.git"
-          SUSFS_REPO="https://gitlab.com/simonpunk/susfs4ksu.git"
+          KSU_REPO="https://github.com/Anatdx/YukiSU.git"
 
           if [[ ! -f "$COMMITS_FILE" ]]; then
             echo "Missing commits file: $COMMITS_FILE"
@@ -43,7 +42,7 @@ jobs:
           # Validate JSON early so we fail loudly on malformed edits.
           jq -e . "$COMMITS_FILE" >/dev/null
 
-          KSU_BRANCH="dev"
+          KSU_BRANCH="main"
           KSU_LATEST=$(git ls-remote "$KSU_REPO" "refs/heads/$KSU_BRANCH" | awk '{print $1}')
 
           if [[ -z "${KSU_LATEST:-}" ]]; then
@@ -56,23 +55,6 @@ jobs:
           mv "$TMP_FILE" "$COMMITS_FILE"
 
           echo "KernelSU dev -> $KSU_LATEST"
-
-          # Iterate current SUSFS keys (e.g. gki-android14-6.1) and fetch latest heads.
-          while IFS= read -r branch; do
-            [[ -n "$branch" ]] || continue
-
-            latest=$(git ls-remote "$SUSFS_REPO" "refs/heads/$branch" | awk '{print $1}')
-            if [[ -z "${latest:-}" ]]; then
-              echo "Warning: could not resolve SUSFS branch: $branch"
-              continue
-            fi
-
-            tmp=$(mktemp)
-            jq --arg branch "$branch" --arg commit "$latest" '.susfs[$branch] = $commit' "$COMMITS_FILE" > "$tmp"
-            mv "$tmp" "$COMMITS_FILE"
-
-            echo "SUSFS $branch -> $latest"
-          done < <(jq -r '.susfs | keys[]' "$COMMITS_FILE")
 
           echo "diff_present=false" >> "$GITHUB_OUTPUT"
           if ! git diff --quiet -- "$COMMITS_FILE"; then
@@ -100,7 +82,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           git add .github/config/commits.json
-          git commit -m "chore(ci): refresh KernelSU and SUSFS commit pins"
+          git commit -m "chore(ci): refresh YukiSU commit pin"
           git push origin "HEAD:${{ inputs.target_branch }}"
 
       - name: Summary
