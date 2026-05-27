@@ -26,11 +26,8 @@ runs:
         # YukiSU Configuration
         CONFIG_KSU=y
         CONFIG_KPROBES=y
-        CONFIG_HAVE_KPROBES=y
         CONFIG_KPROBE_EVENTS=y
-        CONFIG_KSU_SYSCALL_HOOK=y
         CONFIG_KRETPROBES=y
-        CONFIG_HAVE_SYSCALL_TRACEPOINTS=y
         EOF
     
     - name: Extract YukiSU Version Info
